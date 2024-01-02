@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Notes To-Do App</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            background-color: #f8f9fa;
+            margin: 20px;
+        }
+
+        .todo-container {
+            max-width: 400px;
+            margin: auto;
+        }
+
+        .todo-list {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .todo-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #ffffff;
+            border: 1px solid #ced4da;
+            margin: 5px 0;
+            padding: 10px;
+            border-radius: 5px;
+        }
+
+        .delete-btn {
+            background-color: #dc3545;
+            color: #fff;
+            border: none;
+            padding: 5px 10px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="todo-container">
+        <h2 class="text-center">To-Do List</h2>
+        <form action="/add" method="post">
+            <div class="input-group mb-3">
+                <input type="text" class="form-control" placeholder="Add a new task" name="todo" required>
+                <div class="input-group-append">
+                    <button class="btn btn-outline-secondary" type="submit">Add</button>
+                </div>
+            </div>
+        </form>
+        <ul class="todo-list">
+            {% for todo in todos %}
+                <li class="todo-item">
+                    {{ todo }}
+                    <button class="delete-btn" onclick="window.location.href='/delete/{{ loop.index - 1 }}'">Delete</button>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+</body>
+</html>
