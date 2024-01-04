@@ -1,26 +1,37 @@
+# app.py
 from flask import Flask, render_template, request, redirect, url_for
+import sqlite3
 
 app = Flask(__name__)
+DATABASE = "notes.db"
 
-todos = []
+def create_table():
+    conn = sqlite3.connect(DATABASE)
+    cursor = conn.cursor()
+    cursor.execute("CREATE TABLE IF NOT EXISTS notes (id INTEGER PRIMARY KEY AUTOINCREMENT, content TEXT)")
+    conn.commit()
+    conn.close()
 
 @app.route('/')
 def index():
-    return render_template('index.html', todos=todos)
+    create_table()
+    conn = sqlite3.connect(DATABASE)
+    cursor = conn.cursor()
+    cursor.execute("SELECT * FROM notes")
+    notes = cursor.fetchall()
+    conn.close()
+    return render_template('index.html', notes=notes)
 
 @app.route('/add', methods=['POST'])
-def add_todo():
-    todo = request.form.get('todo')
-    todos.append(todo)
-    return redirect(url_for('index'))
-
-@app.route('/delete/<int:index>')
-def delete_todo(index):
-    if 0 <= index < len(todos):
-        del todos[index]
+def add_note():
+    content = request.form.get('content')
+    conn = sqlite3.connect(DATABASE)
+    cursor = conn.cursor()
+    cursor.execute("INSERT INTO notes (content) VALUES (?)", (content,))
+    conn.commit()
+    conn.close()
     return redirect(url_for('index'))
 
 if __name__ == '__main__':
-#    app.run(debug=True)
     app.run(host='0.0.0.0', port=5000, debug=True)
 

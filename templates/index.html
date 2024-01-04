@@ -3,63 +3,96 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Notes To-Do App</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <title>Notes App</title>
     <style>
         body {
-            background-color: #f8f9fa;
-            margin: 20px;
-        }
-
-        .todo-container {
-            max-width: 400px;
-            margin: auto;
-        }
-
-        .todo-list {
-            list-style-type: none;
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
             padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
         }
 
-        .todo-item {
+        h1 {
+            color: #333;
+        }
+
+        form {
             display: flex;
-            justify-content: space-between;
+            flex-direction: column;
             align-items: center;
-            background-color: #ffffff;
-            border: 1px solid #ced4da;
-            margin: 5px 0;
+            margin-top: 20px;
+        }
+
+        input {
             padding: 10px;
+            margin-bottom: 10px;
+            width: 300px;
+            border: 1px solid #ccc;
             border-radius: 5px;
         }
 
-        .delete-btn {
-            background-color: #dc3545;
-            color: #fff;
+        button {
+            padding: 10px;
+            background-color: #4caf50;
+            color: white;
             border: none;
-            padding: 5px 10px;
+            border-radius: 5px;
             cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        li {
+            background-color: #fff;
+            margin-bottom: 10px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        li button {
+            background-color: #f44336;
+            color: white;
+            border: none;
+            border-radius: 3px;
+            padding: 5px;
+            cursor: pointer;
+        }
+
+        li button:hover {
+            background-color: #d32f2f;
         }
     </style>
 </head>
 <body>
-    <div class="todo-container">
-        <h2 class="text-center">To-Do List</h2>
-        <form action="/add" method="post">
-            <div class="input-group mb-3">
-                <input type="text" class="form-control" placeholder="Add a new task" name="todo" required>
-                <div class="input-group-append">
-                    <button class="btn btn-outline-secondary" type="submit">Add</button>
-                </div>
-            </div>
-        </form>
-        <ul class="todo-list">
-            {% for todo in todos %}
-                <li class="todo-item">
-                    {{ todo }}
-                    <button class="delete-btn" onclick="window.location.href='/delete/{{ loop.index - 1 }}'">Delete</button>
-                </li>
-            {% endfor %}
-        </ul>
-    </div>
+    <h1>Notes App</h1>
+    <form action="/add" method="POST">
+        <input type="text" name="content" placeholder="Add a new note" required>
+        <button type="submit">Add Note</button>
+    </form>
+    <ul>
+        {% for note in notes %}
+            <li>
+                <span>{{ note[1] }}</span>
+                <button onclick="window.location.href='/delete/{{ note[0] }}'">Delete</button>
+            </li>
+        {% endfor %}
+    </ul>
 </body>
 </html>
+
