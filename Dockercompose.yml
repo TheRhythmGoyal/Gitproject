@@ -5,6 +5,11 @@ services:
       context: .
       dockerfile: Dockerfile.dev
     volumes:
-      - /home/ubuntu/Gitproject/volume:/data/data
+      - Database:/data/database
     ports:
       - "5000:5000"
+
+volumes:
+  Database:
+    external: true
+
